@@ -1,0 +1,36 @@
+vector<int> topoSort(int n, vector<vector<int>>& ad) {
+        // code here
+      
+        vector<vector<int>> arr(n,vector<int>());
+        vector<int> count(n,0);
+        vector<int> ans;
+        for(int i=0;i<ad.size();i++){
+            arr[ad[i][0]].push_back(ad[i][1]);
+            count[ad[i][1]]++;
+        }
+        queue<int> q;
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            if(count[i]==0){
+                //ans.push_back(i);
+                q.push(i);
+                mp[i]=1;
+            }
+        }
+        while(!q.empty()){
+            int a=q.front();
+            q.pop();
+            for(int i=0;i<arr[a].size();i++){
+                count[arr[a][i]]--;
+            }
+            ans.push_back(a);
+            for(int i=0;i<n;i++){
+                if(count[i]==0 and mp.find(i)==mp.end()){
+                    q.push(i);
+                    mp[i]=1;
+                }
+            }
+        }
+        return ans;
+        
+    }

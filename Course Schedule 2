@@ -1,0 +1,54 @@
+class Solution {
+public:
+    bool sol(vector<vector<int>>& arr,vector<int>& vis,vector<int>& path,vector<pair<int,int>>& ans,int i){
+      vis[i]=1;
+      path[i]=1;
+      for(int j=0;j<arr[i].size();j++){
+        if(vis[arr[i][j]]){
+          if(path[arr[i][j]]){
+            return true;
+          }
+        }
+        if(sol(arr,vis,path,ans,arr[i][j])){
+          return true;
+        }
+        ans[i].second=max(ans[i].second,ans[arr[i][j]].second+1);
+      }
+      
+      path[i]=0;
+      return false;
+    }
+    vector<int> findOrder(int n, vector<vector<int>>& ad) {
+        vector<vector<int>> arr(n,vector<int>());
+        for(int i=0;i<ad.size();i++){
+          arr[ad[i][0]].push_back(ad[i][1]);
+        }
+        vector<int> vis(n,0);
+        vector<int> path(n,0);
+        // for(int i=0;i<n;i++){
+        //   if(arr[i].empty()){
+        //     vis[i]=1;
+        //   }
+        // }
+        vector<pair<int,int>> ans;
+        for(int i=0;i<n;i++){
+          ans.push_back({i,0});
+        }
+        //int i=0;
+        for (int i = 0; i < n; i++) {
+    if (!vis[i]) {
+        if (sol(arr, vis, path, ans, i)) {
+            return {};
+        }
+    }
+}
+        vector<int> ret;
+        sort(ans.begin(),ans.end(),[](pair<int,int>& a,pair<int,int>& b){
+             return a.second<b.second;
+        });
+        for(int i=0;i<n;i++){
+          ret.push_back(ans[i].first);
+        }
+        return ret;
+    }
+};
